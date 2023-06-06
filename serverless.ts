@@ -1,6 +1,6 @@
 import type { AWS } from '@serverless/typescript';
 
-import hello from '@functions/hello';
+import home from '@functions/home';
 
 const serverlessConfiguration: AWS = {
   service: 'api-lambda-restaurants',
@@ -24,7 +24,7 @@ const serverlessConfiguration: AWS = {
     lambdaHashingVersion: '20201221',
   },
   // import the function via paths
-  functions: { hello },
+  functions: { home },
   package: { individually: true },
   custom: {
     stage: '${opt:stage}',
