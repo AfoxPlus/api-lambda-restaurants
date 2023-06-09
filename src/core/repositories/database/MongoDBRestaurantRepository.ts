@@ -43,6 +43,7 @@ export class MongoDBRestaurantRepository implements RestaurantRepository {
             phone: document.phone,
             email: document.email,
             urlImageLogo: document.urlImageLogo,
+            ownDelivery: document.ownDelivery,
             registrationState: {
                 code: document.registrationState.code,
                 state: document.registrationState.state
