@@ -7,5 +7,6 @@ export interface Restaurant {
     phone: string,
     email?: string,
     urlImageLogo: string,
+    ownDelivery: Boolean,
     registrationState: RegistrationState
 }

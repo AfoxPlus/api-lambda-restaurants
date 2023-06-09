@@ -7,15 +7,17 @@ export interface RestaurantDocument extends Document {
     phone: string,
     email: string,
     urlImageLogo: string,
+    ownDelivery: Boolean,
     registrationState: RegistrationStateDocument
 }
 
 const RestaurantSchema: Schema = new Schema({
-    name : {type: String, require: true},
-    description : {type: String},
-    phone : {type: String},
-    email : {type: String},
-    urlImageLogo : {type: String},
+    name: { type: String, require: true },
+    description: { type: String },
+    phone: { type: String },
+    email: { type: String },
+    urlImageLogo: { type: String },
+    ownDelivery: { type: Boolean },
     registrationState: { type: mongoose.Schema.Types.ObjectId, ref: 'RegistrationState' }
 })
 
