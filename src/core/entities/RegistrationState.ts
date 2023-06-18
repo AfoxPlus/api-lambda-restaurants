@@ -1,4 +1,5 @@
 export interface RegistrationState {
-    code: string,
-    state: string
+    id?: string,
+    code?: string,
+    state?: string
 }
