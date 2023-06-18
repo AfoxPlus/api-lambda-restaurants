@@ -1,8 +1,4 @@
-import { RegistrationState } from "@core/entities/RegistrationState";
-import { Subscription } from "@core/entities/Subscription";
-
-export interface Restaurant {
-    code?: string,
+export interface AddRestaurantRequest {
     key: string,
     name: string,
     description: string,
@@ -13,6 +9,6 @@ export interface Restaurant {
     ownDelivery: Boolean,
     paymentMethods: [{ paymentMethod: string }],
     attentionSchedule: string,
-    subscription: Subscription,
-    registrationState: RegistrationState
+    subscription: string
+    registrationState: string
 }
