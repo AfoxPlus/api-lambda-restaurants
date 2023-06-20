@@ -4,6 +4,16 @@ import { RestaurantDocument, RestaurantModel } from "@core/repositories/database
 import { RegistrationStateModel, SubscriptionModel } from "@core/repositories/database/models/registration.state.model";
 
 export class MongoDBRestaurantRepository implements RestaurantRepository {
+
+    findByKey = async (key: string): Promise<Restaurant> => {
+        try {
+            const document = await RestaurantModel.findOne({ key: key })
+            return this.documentToRestaurantAuth(document)
+        } catch (err) {
+            throw new Error("El identificador ingresado no existe")
+        }
+    }
+
     add = async (restaurant: Restaurant) => {
         const document = this.restaurantToDocument(restaurant)
         await RestaurantModel.create(document)
@@ -60,6 +70,16 @@ export class MongoDBRestaurantRepository implements RestaurantRepository {
                 code: document.registrationState.code,
                 state: document.registrationState.state
             }
+        }
+        return restaurants
+    }
+
+    private documentToRestaurantAuth(document: any): Restaurant {
+        const restaurants: Restaurant = {
+            code: document._id,
+            urlImageLogo: document.urlImageLogo,
+            key: document.key,
+            name: document.name
         }
         return restaurants
     }
