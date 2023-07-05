@@ -11,6 +11,7 @@ export interface Restaurant {
     address?: string,
     urlImageLogo: string,
     ownDelivery?: Boolean,
+    showInApp?: Boolean,
     paymentMethods?: [{ paymentMethod: string }],
     attentionSchedule?: string,
     subscription?: Subscription,
