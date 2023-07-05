@@ -33,7 +33,7 @@ export class MongoDBRestaurantRepository implements RestaurantRepository {
 
     fetchHome = async (): Promise<Restaurant[]> => {
         try {
-            const restaurantDocuments: RestaurantDocument[] = await RestaurantModel.find()
+            const restaurantDocuments: RestaurantDocument[] = await RestaurantModel.find({ showInApp: true })
                 .populate({ path: 'registrationState', model: RegistrationStateModel })
                 .populate({ path: 'subscription', model: SubscriptionModel })
             return this.documentsToRestaurant(restaurantDocuments)

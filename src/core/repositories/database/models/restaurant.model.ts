@@ -11,6 +11,7 @@ export interface RestaurantDocument extends Document {
     email: string,
     urlImageLogo: string,
     ownDelivery: Boolean,
+    showInApp: Boolean,
     paymentMethods: [{ paymentMethod: string }],
     subscription: SubscriptionDocument,
     registrationState: RegistrationStateDocument
@@ -26,6 +27,7 @@ const RestaurantSchema: Schema = new Schema({
     email: { type: String },
     urlImageLogo: { type: String },
     ownDelivery: { type: Boolean },
+    showInApp: { type: Boolean },
     paymentMethods: [{ paymentMethod: { type: String } }],
     subscription: { type: mongoose.Schema.Types.ObjectId, ref: 'subscription' },
     registrationState: { type: mongoose.Schema.Types.ObjectId, ref: 'RegistrationState' }
