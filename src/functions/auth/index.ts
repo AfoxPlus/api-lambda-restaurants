@@ -6,7 +6,8 @@ export default {
     {
       http: {
         method: 'post',
-        path: 'restaurant/auth'
+        path: 'restaurant/auth',
+        cors: true
       }
     }
   ]
