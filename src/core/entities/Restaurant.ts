@@ -1,11 +1,19 @@
 import { RegistrationState } from "@core/entities/RegistrationState";
+import { Subscription } from "@core/entities/Subscription";
 
 export interface Restaurant {
-    code: string,
+    code?: string,
+    key: string,
     name: string,
-    description: string,
-    phone: string,
+    description?: string,
+    phone?: string,
     email?: string,
+    address?: string,
     urlImageLogo: string,
-    registrationState: RegistrationState
+    ownDelivery?: Boolean,
+    showInApp?: Boolean,
+    paymentMethods?: [{ paymentMethod: string }],
+    attentionSchedule?: string,
+    subscription?: Subscription,
+    registrationState?: RegistrationState
 }
