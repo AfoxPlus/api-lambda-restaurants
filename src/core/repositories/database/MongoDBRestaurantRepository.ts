@@ -63,7 +63,7 @@ export class MongoDBRestaurantRepository implements RestaurantRepository {
                 code: document.subscription.code,
                 name: document.subscription.name
             },
-            paymentMethods: document.paymentMethods,
+            paymentMethods: this.documentToPaymentMethods(document.paymentMethods),
             urlImageLogo: document.urlImageLogo,
             ownDelivery: document.ownDelivery,
             registrationState: {
@@ -72,6 +72,10 @@ export class MongoDBRestaurantRepository implements RestaurantRepository {
             }
         }
         return restaurants
+    }
+
+    private documentToPaymentMethods(paymentMethods: any): any {
+        return paymentMethods.map(document => ({ id: document._id, paymentMethod: document.paymentMethod, isDefaultSelected: document.isDefaultSelected }))
     }
 
     private documentToRestaurantAuth(document: any): Restaurant {
