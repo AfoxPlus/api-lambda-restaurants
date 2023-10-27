@@ -12,7 +12,7 @@ export interface RestaurantDocument extends Document {
     urlImageLogo: string,
     ownDelivery: Boolean,
     showInApp: Boolean,
-    paymentMethods: [{ paymentMethod: string }],
+    paymentMethods: [{ paymentMethod: string, isDefaultSelected: Boolean }],
     subscription: SubscriptionDocument,
     registrationState: RegistrationStateDocument
 }
@@ -28,7 +28,7 @@ const RestaurantSchema: Schema = new Schema({
     urlImageLogo: { type: String },
     ownDelivery: { type: Boolean },
     showInApp: { type: Boolean },
-    paymentMethods: [{ paymentMethod: { type: String } }],
+    paymentMethods: [{ paymentMethod: { type: String }, isDefaultSelected: { type: Boolean, default: false } }],
     subscription: { type: mongoose.Schema.Types.ObjectId, ref: 'subscription' },
     registrationState: { type: mongoose.Schema.Types.ObjectId, ref: 'RegistrationState' }
 })
