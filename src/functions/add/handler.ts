@@ -1,16 +1,12 @@
-
 import { ValidatedEventAPIGatewayProxyEvent, formatJSONSuccessResponse } from '@libs/apiGateway'
-import { mongodbconnect } from '@core/utils/mongodb_connection'
 import { middyfy } from '@libs/lambda'
-import { RestaurantRepository } from '@core/repositories/RestaurantRepository'
-import { MongoDBRestaurantRepository } from '@core/repositories/database/MongoDBRestaurantRepository'
-import { AddRestaurantRequest } from './AddRestaurantRequest'
-import { Restaurant } from '@core/entities/Restaurant'
-
+import { RestaurantDI } from '@core/di/RestaurantModule'
+import { AddRestaurantRequest } from '@functions/add/AddRestaurantRequest'
+import { Restaurant } from '@core/domain/entities/Restaurant'
 
 const addRestaurant: ValidatedEventAPIGatewayProxyEvent<AddRestaurantRequest> = async (context) => {
-  await mongodbconnect()
-  const restaurantRepository: RestaurantRepository = new MongoDBRestaurantRepository()
+
+  const restaurantRepository = RestaurantDI.restaurantRepository
 
   const addRestaurantRequest = context.body as AddRestaurantRequest
   const restaurant: Restaurant = {

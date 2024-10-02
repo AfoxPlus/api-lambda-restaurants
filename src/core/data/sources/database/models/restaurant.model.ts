@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document, Types } from 'mongoose'
-import { RegistrationStateDocument, SubscriptionDocument } from '@core/repositories/database/models/registration.state.model';
+import { RegistrationStateDocument, SubscriptionDocument } from '@core/data/sources/database/models/registration.state.model';
 export interface RestaurantDocument extends Document {
     _id: Types.ObjectId,
     key: string,

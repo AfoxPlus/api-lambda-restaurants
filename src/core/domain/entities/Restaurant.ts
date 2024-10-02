@@ -1,5 +1,5 @@
-import { RegistrationState } from "@core/entities/RegistrationState";
-import { Subscription } from "@core/entities/Subscription";
+import { RegistrationState } from "@core/domain/entities/RegistrationState";
+import { Subscription } from "@core/domain/entities/Subscription";
 
 export interface Restaurant {
     code?: string,

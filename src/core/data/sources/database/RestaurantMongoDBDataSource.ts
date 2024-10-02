@@ -1,9 +1,8 @@
-import { Restaurant } from "@core/entities/Restaurant";
-import { RestaurantRepository } from "@core/repositories/RestaurantRepository";
-import { RestaurantDocument, RestaurantModel } from "@core/repositories/database/models/restaurant.model";
-import { RegistrationStateModel, SubscriptionModel } from "@core/repositories/database/models/registration.state.model";
+import { Restaurant } from "@core/domain/entities/Restaurant";
+import { RestaurantDocument, RestaurantModel } from "@core/data/sources/database/models/restaurant.model";
+import { RegistrationStateModel, SubscriptionModel } from "@core/data/sources/database/models/registration.state.model";
 
-export class MongoDBRestaurantRepository implements RestaurantRepository {
+export class RestaurantMongoDBDataSource {
 
     findByKey = async (key: string): Promise<Restaurant> => {
         try {
