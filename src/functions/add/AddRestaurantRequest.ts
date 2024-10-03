@@ -8,7 +8,6 @@ export interface AddRestaurantRequest {
     urlImageLogo: string,
     ownDelivery: Boolean,
     paymentMethods: [{ paymentMethod: string }],
-    attentionSchedule: string,
     subscription: string
     registrationState: string
 }

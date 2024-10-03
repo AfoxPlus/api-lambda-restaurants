@@ -4,6 +4,7 @@ import home from '@functions/home';
 import find from '@functions/find';
 import add from '@functions/add';
 import auth from '@functions/auth';
+import geo from '@functions/geo';
 
 const serverlessConfiguration: AWS = {
   service: 'api-lambda-restaurants',
@@ -21,13 +22,15 @@ const serverlessConfiguration: AWS = {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
       MONGODB: '${self:custom.env.${opt:stage}.MONGODB_URL}',
+      GOOGLE_KEY: '${self:custom.env.${opt:stage}.GOOGLE_KEY}',
+      GOOGLE_API: '${self:custom.env.${opt:stage}.GOOGLE_API}',
       VERSION: '${self:custom.version}',
       STAGE: '${opt:stage}',
     },
     lambdaHashingVersion: '20201221',
   },
 
-  functions: { home, find, add, auth },
+  functions: { home, find, add, auth, geo },
   package: { individually: true },
   custom: {
     stage: '${opt:stage}',

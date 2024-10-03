@@ -19,7 +19,6 @@ const addRestaurant: ValidatedEventAPIGatewayProxyEvent<AddRestaurantRequest> = 
     urlImageLogo: addRestaurantRequest.urlImageLogo,
     ownDelivery: addRestaurantRequest.ownDelivery,
     paymentMethods: addRestaurantRequest.paymentMethods,
-    attentionSchedule: addRestaurantRequest.attentionSchedule,
     subscription: { id: addRestaurantRequest.subscription },
     registrationState: { id: addRestaurantRequest.registrationState }
   }
