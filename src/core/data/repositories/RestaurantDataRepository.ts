@@ -19,7 +19,7 @@ export class RestaurantDataRepository implements RestaurantRepository {
         return await this.dataSource.findByKey(key)
     }
 
-    addByGeo = async (latitude: number, longitude: number, radius: number): Promise<Restaurant[]> => {
+    fetchByGooglePlaces = async (latitude: number, longitude: number, radius: number): Promise<Restaurant[]> => {
         return await this.remoteDataSource.getRestaurants(latitude, longitude, radius)
     }
 

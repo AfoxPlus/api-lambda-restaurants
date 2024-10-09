@@ -45,7 +45,6 @@ export class GooglePlaceDataSource{
       }
       const ubigeo = this.getUbigeo(place.addressComponents)
       const restaurant: Restaurant = {
-          placeId: place.id,
           key: "",
           name: place.displayName.text,
           description : "",
@@ -66,6 +65,7 @@ export class GooglePlaceDataSource{
           areaLevel1: ubigeo.areaLevel1,
           areaLevel2: ubigeo.areaLevel2,
           country: ubigeo.country,
+          isFromGoogle: true,
           photos: this.getPhotos(place.photos),
           subscription: {id: "66fea088b59d2b8d79736253"},
           registrationState: {id: "61a19bee0b6de1476436de46"}

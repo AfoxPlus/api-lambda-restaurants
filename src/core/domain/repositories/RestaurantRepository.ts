@@ -5,5 +5,5 @@ export interface RestaurantRepository {
     findRestaurant(code: string): Promise<Restaurant>
     add(restaurant: Restaurant)
     findByKey(key: string): Promise<Restaurant>
-    addByGeo(latitude: number, longitude: number, radius: number): Promise<Restaurant[]>
+    fetchByGooglePlaces(latitude: number, longitude: number, radius: number): Promise<Restaurant[]>
 }

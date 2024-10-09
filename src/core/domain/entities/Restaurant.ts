@@ -3,7 +3,6 @@ import { Subscription } from "@core/domain/entities/Subscription";
 
 export interface Restaurant {
     code?: string,
-    placeId?: string,
     key: string,
     name: string,
     description?: string,
@@ -26,6 +25,7 @@ export interface Restaurant {
     country?: string,
     photos?: Photo[],
     subscription?: Subscription,
+    isFromGoogle?: Boolean,
     registrationState?: RegistrationState
 }
 export interface PaymentMethod {
