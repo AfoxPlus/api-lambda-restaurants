@@ -53,17 +53,22 @@ export class RestaurantMongoDBDataSource {
             code: document._id.toString(),
             key: "",
             name: document.name,
+            type: document.type,
             description: document.description,
             phone: document.phone,
             email: document.email,
             address: document.address,
-            attentionSchedule: document.attentionSchedule,
+            location: {
+                longitude: document.location.longitude,
+                latitude: document.location.latitude
+            },
             subscription: {
                 code: document.subscription.code,
                 name: document.subscription.name
             },
             paymentMethods: this.documentToPaymentMethods(document.paymentMethods),
             urlImageLogo: document.urlImageLogo,
+            urlImageBanner: document.urlImageBanner,
             ownDelivery: document.ownDelivery,
             registrationState: {
                 code: document.registrationState.code,
@@ -82,7 +87,8 @@ export class RestaurantMongoDBDataSource {
             code: document._id,
             urlImageLogo: document.urlImageLogo,
             key: document.key,
-            name: document.name
+            name: document.name,
+            type: document.type
         }
         return restaurants
     }
@@ -92,8 +98,8 @@ export class RestaurantMongoDBDataSource {
             name: restaurant.name,
             key: restaurant.key,
             description: restaurant.description,
+            type: restaurant.type,
             address: restaurant.address,
-            attentionSchedule: restaurant.attentionSchedule,
             phone: restaurant.phone,
             email: restaurant.email,
             urlImageLogo: restaurant.urlImageLogo,
