@@ -5,6 +5,7 @@ import find from '@functions/find';
 import add from '@functions/add';
 import auth from '@functions/auth';
 import geo from '@functions/geo';
+import homeBDUI from '@functions/home/v1';
 
 const serverlessConfiguration: AWS = {
   service: 'api-lambda-restaurants',
@@ -30,7 +31,7 @@ const serverlessConfiguration: AWS = {
     lambdaHashingVersion: '20201221',
   },
 
-  functions: { home, find, add, auth, geo },
+  functions: { home, find, add, auth, geo, homeBDUI },
   package: { individually: true },
   custom: {
     stage: '${opt:stage}',
