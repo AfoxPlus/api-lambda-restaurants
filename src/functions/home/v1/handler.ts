@@ -5,7 +5,7 @@ import { RestaurantDI } from '@core/di/RestaurantModule'
 
 const homeBDUI: APIGatewayProxyHandler = async () => {
   const restaurantRepository = RestaurantDI.restaurantRepository
-  const restaurants = await restaurantRepository.fetchHome().catch(err => {
+  const restaurants = await restaurantRepository.fetchHomeBDUI().catch(err => {
     return formatJSONSuccessResponse({
       success: false,
       payload: {},
@@ -15,7 +15,7 @@ const homeBDUI: APIGatewayProxyHandler = async () => {
   return formatJSONSuccessResponse({
     success: true,
     payload: restaurants,
-    message: "GET Restaurants"
+    message: "GET Home BDUI"
   });
 }
 

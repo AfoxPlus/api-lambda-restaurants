@@ -133,23 +133,52 @@ export class RestaurantMongoDBDataSource {
 
     private restaurantToDocument(restaurant: Restaurant): any {
         const document = {
-            name: restaurant.name,
             key: restaurant.key,
-            description: restaurant.description,
+            name: restaurant.name,
             primaryType: restaurant.primaryType,
-            address: restaurant.address,
-            phone: restaurant.phone,
+            description: restaurant.description || "",
+            phone: restaurant.phone || "",
             email: restaurant.email,
+            address: restaurant.address,
             urlImageLogo: restaurant.urlImageLogo,
+            urlImageBanner: restaurant.urlImageBanner,
             ownDelivery: restaurant.ownDelivery,
-            paymentMethods: restaurant.paymentMethods,
-            subscription: restaurant.subscription.id.toString(),
+            isOnlyDelivery: restaurant.isOnlyDelivery,
+            isVerified: restaurant.isVerified,
+            openNow: restaurant.openNow,
+            showInApp: restaurant.showInApp,
+            userRatingCount: restaurant.userRatingCount,
+            rating: restaurant.rating,
+            googleMapsUri: restaurant.googleMapsUri,
+            websiteUri: restaurant.websiteUri,
+            postalCode: restaurant.postalCode,
+            areaLevel2: restaurant.areaLevel2,
+            areaLevel1: restaurant.areaLevel1,
+            country: restaurant.country,
             location: {
                 type: 'Point',
-                coordinates: [restaurant.location.longitude, restaurant.location.latitude]
+                coordinates: [
+                    restaurant.location ? restaurant.location.longitude : 0.0,
+                    restaurant.location ? restaurant.location.latitude : 0.0
+                ]
             },
-            registrationState: restaurant.registrationState.id.toString()
-        }
+            types: restaurant.types.map(type => ({ name: type.name })),
+            paymentMethods: restaurant.paymentMethods.map(method => ({
+                paymentMethod: method.paymentMethod,
+                isDefaultSelected: method.isDefaultSelected || false
+            })),
+            regularOpeningHours: restaurant.regularOpeningHours?.map(hour => ({
+                weekdayDescription: hour.weekdayDescription
+            })) || [],
+            photos: restaurant.photos.map(photo => ({
+                name: photo.name,
+                widthPx: photo.widthPx,
+                heightPx: photo.heightPx
+            })),
+            subscription: restaurant.subscription.id,
+            registrationState: restaurant.registrationState.id
+        };
+
         return document
     }
 

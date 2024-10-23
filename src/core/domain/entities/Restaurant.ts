@@ -34,7 +34,8 @@ export interface Restaurant {
     registrationState?: RegistrationState
 }
 export interface PaymentMethod {
-    paymentMethod: string
+    paymentMethod: string,
+    isDefaultSelected: boolean
 }
 export interface Location {
     latitude: number
