@@ -1,15 +1,17 @@
 import axios, { AxiosInstance } from "axios";
 
-class ApiProperties{
+class ApiProperties {
     axiosInstance: AxiosInstance
     googleKey: string
+    googleGamilPass: string
 
-    constructor(){
-        const { GOOGLE_API, GOOGLE_KEY } = process.env
+    constructor() {
+        const { GOOGLE_API, GOOGLE_KEY, GOOGLE_GMAIL_PASS } = process.env
         this.axiosInstance = axios.create({
             baseURL: GOOGLE_API,
-          });
+        });
         this.googleKey = GOOGLE_KEY
+        this.googleGamilPass = GOOGLE_GMAIL_PASS
     }
 }
 

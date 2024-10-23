@@ -6,6 +6,7 @@ import add from '@functions/add';
 import auth from '@functions/auth';
 import geo from '@functions/geo';
 import homeBDUI from '@functions/home/v1';
+import mail from '@functions/mail';
 
 const serverlessConfiguration: AWS = {
   service: 'api-lambda-restaurants',
@@ -25,13 +26,14 @@ const serverlessConfiguration: AWS = {
       MONGODB: '${self:custom.env.${opt:stage}.MONGODB_URL}',
       GOOGLE_KEY: '${self:custom.env.${opt:stage}.GOOGLE_KEY}',
       GOOGLE_API: '${self:custom.env.${opt:stage}.GOOGLE_API}',
+      GOOGLE_GMAIL_PASS: '${self:custom.env.${opt:stage}.GOOGLE_GMAIL_PASS}',
       VERSION: '${self:custom.version}',
       STAGE: '${opt:stage}',
     },
     lambdaHashingVersion: '20201221',
   },
 
-  functions: { home, find, add, auth, geo, homeBDUI },
+  functions: { home, find, add, auth, geo, homeBDUI, mail },
   package: { individually: true },
   custom: {
     stage: '${opt:stage}',
