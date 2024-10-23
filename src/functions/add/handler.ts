@@ -1,46 +1,64 @@
 import { ValidatedEventAPIGatewayProxyEvent, formatJSONSuccessResponse } from '@libs/apiGateway'
 import { middyfy } from '@libs/lambda'
 import { RestaurantDI } from '@core/di/RestaurantModule'
-import { AddRestaurantRequest } from '@functions/add/AddRestaurantRequest'
+import { EstablishmentRequest } from '@functions/add/EstablishmentRequest'
 import { Restaurant } from '@core/domain/entities/Restaurant'
 
-const addRestaurant: ValidatedEventAPIGatewayProxyEvent<AddRestaurantRequest> = async (context) => {
-
+const addRestaurant: ValidatedEventAPIGatewayProxyEvent<EstablishmentRequest> = async (context) => {
   const restaurantRepository = RestaurantDI.restaurantRepository
-  const addRestaurantRequest = context.body as AddRestaurantRequest
-
+  const establishment = context.body as EstablishmentRequest
   const restaurant: Restaurant = {
-    key: addRestaurantRequest.key,
-    name: addRestaurantRequest.name,
-    type: addRestaurantRequest.type,
-    description: addRestaurantRequest.description,
-    phone: addRestaurantRequest.phone,
-    email: addRestaurantRequest.email,
-    address: addRestaurantRequest.address,
-    urlImageLogo: addRestaurantRequest.urlImageLogo,
-    ownDelivery: addRestaurantRequest.ownDelivery,
-    paymentMethods: addRestaurantRequest.paymentMethods,
-    subscription: { id: addRestaurantRequest.subscription },
-    registrationState: { id: addRestaurantRequest.registrationState },
-    types: addRestaurantRequest.types?.map((item) => ({ name: item.name })),
-    location: { latitude: addRestaurantRequest.location.latitude, longitude: addRestaurantRequest.location.longitude },
-    userRatingCount: addRestaurantRequest.userRatingCount,
-    rating: addRestaurantRequest.rating,
-    googleMapsUri: addRestaurantRequest.googleMapsUri,
-    websiteUri: addRestaurantRequest.websiteUri,
-    regularOpeningHours: addRestaurantRequest.regularOpeningHours?.map((item) => ({ weekdayDescription: item.weekdayDescription })),
-    postalCode: addRestaurantRequest.postalCode,
-    areaLevel2: addRestaurantRequest.areaLevel2,
-    areaLevel1: addRestaurantRequest.areaLevel1,
-    country: addRestaurantRequest.country,
-    photos: addRestaurantRequest.photos?.map((item) => ({ name: item.name, widthPx: item.widthPx, heightPx: item.heightPx }))
-  }
+    key: establishment.key,
+    name: establishment.name,
+    primaryType: establishment.primaryType || "",
+    description: establishment.description,
+    phone: establishment.phone,
+    email: establishment.email,
+    address: establishment.address,
+    urlImageLogo: establishment.urlImageLogo,
+    urlImageBanner: establishment.urlImageBanner,
+    ownDelivery: establishment.ownDelivery,
+    isOnlyDelivery: establishment.isOnlyDelivery,
+    isVerified: establishment.isVerified,
+    openNow: establishment.openNow,
+    showInApp: establishment.showInApp,
+    userRatingCount: establishment.userRatingCount,
+    rating: establishment.rating,
+    googleMapsUri: establishment.googleMapsUri,
+    websiteUri: establishment.websiteUri,
+    postalCode: establishment.postalCode,
+    areaLevel2: establishment.areaLevel2,
+    areaLevel1: establishment.areaLevel1,
+    country: establishment.country,
+    location: establishment.location ? {
+      latitude: establishment.location.coordinates[1],
+      longitude: establishment.location.coordinates[0]
+    } : undefined,
+    types: establishment.types?.map(type => ({ name: type.name })),
+    paymentMethods: establishment.paymentMethods?.map(method => ({
+      paymentMethod: method.paymentMethod
+    })),
+    regularOpeningHours: establishment.regularOpeningHours?.map(hour => ({
+      weekdayDescription: hour.weekdayDescription
+    })),
+    photos: establishment.photos?.map(photo => ({
+      name: photo.name,
+      widthPx: Number(photo.widthPx),
+      heightPx: Number(photo.heightPx)
+    })),
+    subscription: establishment.subscription ? { id: establishment.subscription } : undefined,
+    registrationState: establishment.registrationState ? { id: establishment.registrationState } : undefined
+  };
+
   await restaurantRepository.add(restaurant)
+
   return formatJSONSuccessResponse({
     success: true,
     payload: {},
     message: "Added OK!"
   });
 }
+
+
 
 export const main = middyfy(addRestaurant);

@@ -5,33 +5,37 @@ export interface Restaurant {
     code?: string,
     key: string,
     name: string,
-    type: string,
+    primaryType: string,
     description?: string,
     phone?: string,
     email?: string,
     address?: string,
     urlImageLogo: string,
     urlImageBanner?: string,
-    ownDelivery?: Boolean,
-    showInApp?: Boolean,
-    paymentMethods?: PaymentMethod[],
-    types?: Type[],
-    location?: Location,
+    ownDelivery?: boolean,
+    isOnlyDelivery?: boolean,
+    isVerified?: boolean,
+    openNow?: boolean,
+    showInApp?: boolean,
     userRatingCount?: number,
     rating?: number,
     googleMapsUri?: string,
     websiteUri?: string,
-    regularOpeningHours?: RegularOpeningHours[],
     postalCode?: string,
     areaLevel2?: string,
     areaLevel1?: string,
     country?: string,
+    location?: Location,
+    types?: Type[],
+    paymentMethods?: PaymentMethod[],
+    regularOpeningHours?: RegularOpeningHours[],
     photos?: Photo[],
     subscription?: Subscription,
     registrationState?: RegistrationState
 }
 export interface PaymentMethod {
-    paymentMethod: string
+    paymentMethod: string,
+    isDefaultSelected: boolean
 }
 export interface Location {
     latitude: number

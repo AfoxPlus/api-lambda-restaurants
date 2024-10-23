@@ -1,4 +1,4 @@
-import { Restaurant } from "@core/domain/entities/Restaurant";
+import { PaymentMethod, Restaurant } from "@core/domain/entities/Restaurant";
 import { RestaurantDocument, RestaurantModel } from "@core/data/sources/database/models/restaurant.model";
 import { RegistrationStateModel, SubscriptionModel } from "@core/data/sources/database/models/registration.state.model";
 
@@ -41,6 +41,29 @@ export class RestaurantMongoDBDataSource {
         }
     }
 
+    getNearbyRestaurants = async (lat: number, lon: number, maxDistance: number): Promise<Restaurant[]> => {
+        try {
+            const documents = await RestaurantModel.find({
+                showInApp: true,
+                location: {
+                    $near: {
+                        $geometry: {
+                            type: 'Point',
+                            coordinates: [lon, lat]
+                        },
+                        $maxDistance: maxDistance
+                    }
+                }
+            })
+                .populate({ path: 'registrationState', model: RegistrationStateModel })
+                .populate({ path: 'subscription', model: SubscriptionModel })
+            return this.documentsToRestaurant(documents)
+        } catch (error) {
+            console.error('Error obteniendo restaurantes cercanos:', error);
+            throw error;
+        }
+    }
+
     private documentsToRestaurant(documents: RestaurantDocument[]): Restaurant[] {
         const restaurants: Restaurant[] = documents.map((document) => (
             this.documentToRestaurant(document)
@@ -53,23 +76,38 @@ export class RestaurantMongoDBDataSource {
             code: document._id.toString(),
             key: "",
             name: document.name,
-            type: document.type,
+            primaryType: document.primaryType,
             description: document.description,
             phone: document.phone,
             email: document.email,
             address: document.address,
+            urlImageLogo: document.urlImageLogo,
+            urlImageBanner: document.urlImageBanner,
+            ownDelivery: document.ownDelivery,
+            isOnlyDelivery: document.isOnlyDelivery,
+            isVerified: document.isVerified,
+            openNow: document.openNow,
+            showInApp: document.showInApp,
+            userRatingCount: document.userRatingCount,
+            rating: document.rating,
+            googleMapsUri: document.googleMapsUri,
+            websiteUri: document.websiteUri,
+            postalCode: document.postalCode,
+            areaLevel2: document.areaLevel2,
+            areaLevel1: document.areaLevel1,
+            country: document.country,
             location: {
-                longitude: document.location.longitude,
-                latitude: document.location.latitude
+                longitude: document.location.coordinates[0],
+                latitude: document.location.coordinates[1]
             },
+            types: document.types?.map((item) => ({ name: item.name })),
+            paymentMethods: this.documentToPaymentMethods(document.paymentMethods),
+            regularOpeningHours: document.regularOpeningHours?.map((item) => ({ weekdayDescription: item.weekdayDescription })),
+            photos: document.photos?.map((item) => ({ name: item.name, heightPx: item.heightPx, widthPx: item.widthPx })),
             subscription: {
                 code: document.subscription.code,
                 name: document.subscription.name
             },
-            paymentMethods: this.documentToPaymentMethods(document.paymentMethods),
-            urlImageLogo: document.urlImageLogo,
-            urlImageBanner: document.urlImageBanner,
-            ownDelivery: document.ownDelivery,
             registrationState: {
                 code: document.registrationState.code,
                 state: document.registrationState.state
@@ -78,7 +116,7 @@ export class RestaurantMongoDBDataSource {
         return restaurants
     }
 
-    private documentToPaymentMethods(paymentMethods: any): any {
+    private documentToPaymentMethods(paymentMethods: any): PaymentMethod[] {
         return paymentMethods.map(document => ({ id: document._id, paymentMethod: document.paymentMethod, isDefaultSelected: document.isDefaultSelected }))
     }
 
@@ -87,27 +125,60 @@ export class RestaurantMongoDBDataSource {
             code: document._id,
             urlImageLogo: document.urlImageLogo,
             key: document.key,
-            name: document.name,
-            type: document.type
+            primaryType: document.type,
+            name: document.name
         }
         return restaurants
     }
 
     private restaurantToDocument(restaurant: Restaurant): any {
         const document = {
-            name: restaurant.name,
             key: restaurant.key,
-            description: restaurant.description,
-            type: restaurant.type,
-            address: restaurant.address,
-            phone: restaurant.phone,
+            name: restaurant.name,
+            primaryType: restaurant.primaryType,
+            description: restaurant.description || "",
+            phone: restaurant.phone || "",
             email: restaurant.email,
+            address: restaurant.address,
             urlImageLogo: restaurant.urlImageLogo,
+            urlImageBanner: restaurant.urlImageBanner,
             ownDelivery: restaurant.ownDelivery,
-            paymentMethods: restaurant.paymentMethods,
-            subscription: restaurant.subscription.id.toString(),
-            registrationState: restaurant.registrationState.id.toString()
-        }
+            isOnlyDelivery: restaurant.isOnlyDelivery,
+            isVerified: restaurant.isVerified,
+            openNow: restaurant.openNow,
+            showInApp: restaurant.showInApp,
+            userRatingCount: restaurant.userRatingCount,
+            rating: restaurant.rating,
+            googleMapsUri: restaurant.googleMapsUri,
+            websiteUri: restaurant.websiteUri,
+            postalCode: restaurant.postalCode,
+            areaLevel2: restaurant.areaLevel2,
+            areaLevel1: restaurant.areaLevel1,
+            country: restaurant.country,
+            location: {
+                type: 'Point',
+                coordinates: [
+                    restaurant.location ? restaurant.location.longitude : 0.0,
+                    restaurant.location ? restaurant.location.latitude : 0.0
+                ]
+            },
+            types: restaurant.types.map(type => ({ name: type.name })),
+            paymentMethods: restaurant.paymentMethods.map(method => ({
+                paymentMethod: method.paymentMethod,
+                isDefaultSelected: method.isDefaultSelected || false
+            })),
+            regularOpeningHours: restaurant.regularOpeningHours?.map(hour => ({
+                weekdayDescription: hour.weekdayDescription
+            })) || [],
+            photos: restaurant.photos.map(photo => ({
+                name: photo.name,
+                widthPx: photo.widthPx,
+                heightPx: photo.heightPx
+            })),
+            subscription: restaurant.subscription.id,
+            registrationState: restaurant.registrationState.id
+        };
+
         return document
     }
 
