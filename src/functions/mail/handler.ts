@@ -8,7 +8,7 @@ const mail: ValidatedEventAPIGatewayProxyEvent<MailRequest> = async (context) =>
   try {
     const { name, email, message } = context.body as MailRequest
     const messageRepository = RestaurantDI.messageRepository
-    messageRepository.add({ name, email, message })
+    await messageRepository.add({ name, email, message })
     return formatJSONSuccessResponse({
       success: true,
       payload: {},
