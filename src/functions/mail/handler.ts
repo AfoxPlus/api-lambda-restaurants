@@ -12,7 +12,7 @@ const mail: ValidatedEventAPIGatewayProxyEvent<MailRequest> = async (context) =>
     return formatJSONSuccessResponse({
       success: true,
       payload: {},
-      message: "Send message successfully"
+      message: "Save message successfully"
     });
   } catch (err) {
     return formatJSONSuccessResponse({
