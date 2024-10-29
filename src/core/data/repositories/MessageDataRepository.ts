@@ -7,7 +7,7 @@ export class MessageDataRepository implements MessageRepository {
     constructor(private dataSource: MessageMongoDBDataSource) { }
 
     add = async (message: Message) => {
-        this.dataSource.createMessage(message)
+        await this.dataSource.createMessage(message)
     }
     fetch = async (): Promise<Message[]> => {
         return await this.fetch()
