@@ -8,4 +8,5 @@ export interface RestaurantRepository {
     add(restaurant: Restaurant)
     findByKey(key: string): Promise<Restaurant>
     fetchByGooglePlaces(latitude: number, longitude: number, radius: number): Promise<Restaurant[]>
+    getTypes(): Promise<string[]>
 }

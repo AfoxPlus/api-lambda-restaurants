@@ -7,6 +7,10 @@ import { Content, SectionBDUI } from "@core/domain/entities/SectionBDUI";
 export class RestaurantDataRepository implements RestaurantRepository {
     constructor(private dataSource: RestaurantMongoDBDataSource, private remoteDataSource: GooglePlaceDataSource) { }
 
+    getTypes = async (): Promise<string[]> => {
+        return await this.dataSource.getTypes()
+    }
+
     fetchHomeBDUI = async (): Promise<SectionBDUI[]> => {
         const restaurants = await this.dataSource.fetchHome()
         const sectionBanner: SectionBDUI = {

@@ -4,6 +4,19 @@ import { RegistrationStateModel, SubscriptionModel } from "@core/data/sources/da
 
 export class RestaurantMongoDBDataSource {
 
+    getTypes = async (): Promise<string[]> => {
+        try {
+            const result = await RestaurantModel.aggregate([
+                { $unwind: "$types" },
+                { $group: { _id: "$types.name" } },
+                { $project: { _id: 0, uniqueType: "$_id" } }
+            ]);
+            return result.map(item => item.uniqueType);
+        } catch (error) {
+            throw new Error("Error al agrupar los types");
+        }
+    }
+
     findByKey = async (key: string): Promise<Restaurant> => {
         try {
             const document = await RestaurantModel.findOne({ key: key })
