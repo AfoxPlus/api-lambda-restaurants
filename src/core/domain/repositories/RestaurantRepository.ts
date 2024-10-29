@@ -1,5 +1,6 @@
 import { Restaurant } from "@core/domain/entities/Restaurant"
 import { SectionBDUI } from "@core/domain/entities/SectionBDUI"
+import { RestaurantFilter } from "@core/domain/models/RestaurantFilter"
 
 export interface RestaurantRepository {
     fetchHome(): Promise<Restaurant[]>
@@ -9,4 +10,5 @@ export interface RestaurantRepository {
     findByKey(key: string): Promise<Restaurant>
     fetchByGooglePlaces(latitude: number, longitude: number, radius: number): Promise<Restaurant[]>
     getTypes(): Promise<string[]>
+    filterRestaurants(filter: RestaurantFilter): Promise<Restaurant[]>
 }

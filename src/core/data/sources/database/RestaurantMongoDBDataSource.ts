@@ -1,6 +1,7 @@
 import { PaymentMethod, Restaurant } from "@core/domain/entities/Restaurant";
 import { RestaurantDocument, RestaurantModel } from "@core/data/sources/database/models/restaurant.model";
 import { RegistrationStateModel, SubscriptionModel } from "@core/data/sources/database/models/registration.state.model";
+import { RestaurantFilter } from "@core/domain/models/RestaurantFilter";
 
 export class RestaurantMongoDBDataSource {
 
@@ -54,26 +55,29 @@ export class RestaurantMongoDBDataSource {
         }
     }
 
-    getNearbyRestaurants = async (lat: number, lon: number, maxDistance: number): Promise<Restaurant[]> => {
+    filterRestaurants = async (filter: RestaurantFilter): Promise<Restaurant[]> => {
         try {
-            const documents = await RestaurantModel.find({
+            const query: any = {
                 showInApp: true,
                 location: {
                     $near: {
                         $geometry: {
                             type: 'Point',
-                            coordinates: [lon, lat]
+                            coordinates: filter.coordinates
                         },
-                        $maxDistance: maxDistance
+                        $maxDistance: filter.maxDistance
                     }
                 }
-            })
+            }
+            if (filter.types && filter.types.length > 0) {
+                query["types.name"] = { $in: filter.types }
+            }
+            const documents = await RestaurantModel.find(query)
                 .populate({ path: 'registrationState', model: RegistrationStateModel })
                 .populate({ path: 'subscription', model: SubscriptionModel })
             return this.documentsToRestaurant(documents)
         } catch (error) {
-            console.error('Error obteniendo restaurantes cercanos:', error);
-            throw error;
+            throw new Error("Error obteniendo restaurantes cercanos")
         }
     }
 

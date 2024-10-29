@@ -3,9 +3,14 @@ import { RestaurantRepository } from "@core/domain/repositories/RestaurantReposi
 import { RestaurantMongoDBDataSource } from "@core/data/sources/database/RestaurantMongoDBDataSource";
 import { GooglePlaceDataSource } from "../sources/remote/GooglePlaceDataSource";
 import { Content, SectionBDUI } from "@core/domain/entities/SectionBDUI";
+import { RestaurantFilter } from "@core/domain/models/RestaurantFilter";
 
 export class RestaurantDataRepository implements RestaurantRepository {
     constructor(private dataSource: RestaurantMongoDBDataSource, private remoteDataSource: GooglePlaceDataSource) { }
+
+    filterRestaurants = async (filter: RestaurantFilter): Promise<Restaurant[]> => {
+        return await this.dataSource.filterRestaurants(filter)
+    }
 
     getTypes = async (): Promise<string[]> => {
         return await this.dataSource.getTypes()
