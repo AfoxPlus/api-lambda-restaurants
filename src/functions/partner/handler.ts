@@ -4,6 +4,7 @@ import { middyfy } from '@libs/lambda'
 import { PartnerRequest } from './PartnerRequest'
 import { RestaurantDI } from '@core/di/RestaurantModule';
 import { Restaurant } from '@core/domain/entities/Restaurant';
+import { EmailManager } from '@utils/EmailManager';
 
 const partner: ValidatedEventAPIGatewayProxyEvent<PartnerRequest> = async (context) => {
   try {
@@ -29,7 +30,7 @@ const partner: ValidatedEventAPIGatewayProxyEvent<PartnerRequest> = async (conte
         restaurants: [establishmentResult]
       };
 
-      await partnerRepository.add(partnerData);
+      await Promise.all([partnerRepository.add(partnerData), EmailManager.sendEmailAfterRegister(email, name, restaurant)]);
 
       return formatJSONSuccessResponse({
         success: true,

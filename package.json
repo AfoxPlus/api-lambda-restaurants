@@ -16,7 +16,8 @@
     "@middy/http-json-body-parser": "^3.4.0",
     "axios": "^1.7.7",
     "crypto": "^1.0.1",
-    "mongoose": "^8.5.2"
+    "mongoose": "^8.5.2",
+    "nodemailer": "^6.9.16"
   },
   "devDependencies": {
     "@serverless/typescript": "^3.38.0",

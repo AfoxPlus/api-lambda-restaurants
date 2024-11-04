@@ -4,6 +4,7 @@ class ApiProperties {
     axiosInstance: AxiosInstance
     googleKey: string
     googleGamilPass: string
+    googleGmailAccount: string
 
     constructor() {
         const { GOOGLE_API, GOOGLE_KEY, GOOGLE_GMAIL_PASS } = process.env
@@ -12,6 +13,7 @@ class ApiProperties {
         });
         this.googleKey = GOOGLE_KEY
         this.googleGamilPass = GOOGLE_GMAIL_PASS
+        this.googleGmailAccount = "afoxplus@gmail.com"
     }
 }
 
