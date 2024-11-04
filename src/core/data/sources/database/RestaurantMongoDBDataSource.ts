@@ -2,6 +2,7 @@ import { PaymentMethod, Restaurant } from "@core/domain/entities/Restaurant";
 import { RestaurantDocument, RestaurantModel } from "@core/data/sources/database/models/restaurant.model";
 import { RegistrationStateModel, SubscriptionModel } from "@core/data/sources/database/models/registration.state.model";
 import { RestaurantFilter } from "@core/domain/models/RestaurantFilter";
+import crypto from 'crypto';
 
 export class RestaurantMongoDBDataSource {
 
@@ -24,6 +25,35 @@ export class RestaurantMongoDBDataSource {
             return this.documentToRestaurantAuth(document)
         } catch (err) {
             throw new Error("El identificador ingresado no existe")
+        }
+    }
+
+    addFromLanding = async (restaurant: Restaurant): Promise<Restaurant> => {
+        try {
+            const document = {
+                key: restaurant.key,
+                name: restaurant.name,
+                primaryType: restaurant.primaryType,
+                location: {
+                    type: 'Point',
+                    coordinates: [
+                        -8.090899,
+                        -78.993774
+                    ]
+                },
+                subscription: "66fea088b59d2b8d79736253",
+                registrationState: "61a19bee0b6de1476436de46"
+            }
+            const result: RestaurantDocument = await RestaurantModel.create(document)
+            const newRestaurant: Restaurant = {
+                code: result._id.toString(),
+                key: result.key,
+                name: result.name,
+                primaryType: result.primaryType
+            }
+            return newRestaurant
+        } catch (err) {
+            throw Error("Error al crear el establecimiento")
         }
     }
 
@@ -80,6 +110,28 @@ export class RestaurantMongoDBDataSource {
             throw new Error("Error obteniendo restaurantes cercanos")
         }
     }
+
+    generateRandomKey(length: number): string {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        let result = '';
+        for (let i = 0; i < length; i++) {
+            const randomIndex = crypto.randomInt(0, characters.length);
+            result += characters[randomIndex];
+        }
+        return result;
+    }
+
+    generateUniqueKey = async (): Promise<string> => {
+        let uniqueKey: string;
+        while (true) {
+            uniqueKey = this.generateRandomKey(6);
+            const existingDocument = await RestaurantModel.findOne({ key: uniqueKey });
+            if (!existingDocument) {
+                break;
+            }
+        }
+        return uniqueKey;
+    };
 
     private documentsToRestaurant(documents: RestaurantDocument[]): Restaurant[] {
         const restaurants: Restaurant[] = documents.map((document) => (

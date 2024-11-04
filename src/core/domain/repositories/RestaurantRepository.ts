@@ -6,9 +6,10 @@ export interface RestaurantRepository {
     fetchHome(): Promise<Restaurant[]>
     fetchHomeBDUI(): Promise<SectionBDUI[]>
     findRestaurant(code: string): Promise<Restaurant>
-    add(restaurant: Restaurant)
+    add(restaurant: Restaurant): Promise<Restaurant>
     findByKey(key: string): Promise<Restaurant>
     fetchByGooglePlaces(latitude: number, longitude: number, radius: number): Promise<Restaurant[]>
     getTypes(): Promise<string[]>
     filterRestaurants(filter: RestaurantFilter): Promise<Restaurant[]>
+    generateUniqueKey(): Promise<string>
 }

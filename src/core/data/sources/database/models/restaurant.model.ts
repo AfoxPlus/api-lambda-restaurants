@@ -10,11 +10,11 @@ export interface RestaurantDocument extends Document {
     key: string,
     name: string,
     primaryType: string,
-    description: string,
-    phone: string,
+    description?: string,
+    phone?: string,
     email?: string,
-    address: string,
-    urlImageLogo: string,
+    address?: string,
+    urlImageLogo?: string,
     urlImageBanner?: string,
     ownDelivery?: boolean,
     isOnlyDelivery?: boolean,
@@ -29,11 +29,11 @@ export interface RestaurantDocument extends Document {
     areaLevel2?: string,
     areaLevel1?: string,
     country?: string,
-    location: LocationDocument;
-    types: [{ name: string }]
-    paymentMethods: [{ paymentMethod: string, isDefaultSelected: Boolean }],
+    location?: LocationDocument;
+    types?: [{ name: string }]
+    paymentMethods?: [{ paymentMethod: string, isDefaultSelected: Boolean }],
     regularOpeningHours?: [{ weekdayDescription: string }],
-    photos: [{
+    photos?: [{
         name: string
         widthPx?: number
         heightPx?: number
@@ -43,7 +43,7 @@ export interface RestaurantDocument extends Document {
 }
 
 const RestaurantSchema: Schema = new Schema({
-    key: { type: String, require: true, unique: true },
+    key: { type: String, required: true, unique: true, index: true },
     name: { type: String, require: true },
     primaryType: { type: String },
     description: { type: String },
@@ -52,11 +52,11 @@ const RestaurantSchema: Schema = new Schema({
     address: { type: String },
     urlImageLogo: { type: String },
     urlImageBanner: { type: String },
-    ownDelivery: { type: Boolean },
-    isOnlyDelivery: { type: Boolean },
-    isVerified: { type: Boolean },
-    openNow: { type: Boolean },
-    showInApp: { type: Boolean },
+    ownDelivery: { type: Boolean, default: false },
+    isOnlyDelivery: { type: Boolean, default: false },
+    isVerified: { type: Boolean, default: false },
+    openNow: { type: Boolean, default: false },
+    showInApp: { type: Boolean, default: false },
     userRatingCount: { type: Number },
     rating: { type: Number },
     googleMapsUri: { type: String },

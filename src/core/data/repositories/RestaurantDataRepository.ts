@@ -7,6 +7,9 @@ import { RestaurantFilter } from "@core/domain/models/RestaurantFilter";
 
 export class RestaurantDataRepository implements RestaurantRepository {
     constructor(private dataSource: RestaurantMongoDBDataSource, private remoteDataSource: GooglePlaceDataSource) { }
+    generateUniqueKey = async (): Promise<string> => {
+        return await this.dataSource.generateUniqueKey()
+    }
 
     filterRestaurants = async (filter: RestaurantFilter): Promise<Restaurant[]> => {
         return await this.dataSource.filterRestaurants(filter)
@@ -45,8 +48,8 @@ export class RestaurantDataRepository implements RestaurantRepository {
     findRestaurant = async (code: string): Promise<Restaurant> => {
         return await this.dataSource.findRestaurant(code)
     }
-    add = async (restaurant: Restaurant) => {
-        return await this.dataSource.add(restaurant)
+    add = async (restaurant: Restaurant): Promise<Restaurant> => {
+        return await this.dataSource.addFromLanding(restaurant)
     }
     findByKey = async (key: string): Promise<Restaurant> => {
         return await this.dataSource.findByKey(key)

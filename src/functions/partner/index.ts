@@ -6,7 +6,7 @@ export default {
     {
       http: {
         method: 'post',
-        path: 'restaurant/mail',
+        path: 'restaurant/partner',
         cors: true
       }
     }

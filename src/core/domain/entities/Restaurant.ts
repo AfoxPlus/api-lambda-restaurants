@@ -10,7 +10,7 @@ export interface Restaurant {
     phone?: string,
     email?: string,
     address?: string,
-    urlImageLogo: string,
+    urlImageLogo?: string,
     urlImageBanner?: string,
     ownDelivery?: boolean,
     isOnlyDelivery?: boolean,
