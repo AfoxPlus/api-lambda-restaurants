@@ -8,6 +8,10 @@ import { Autocomplete } from "@core/domain/models/Autocomplete";
 export class RestaurantMongoDBDataSource {
 
     autocomplete = async (autocomplete: Autocomplete): Promise<Restaurant[]> => {
+        if (!autocomplete.query) {
+            return [];
+        }
+
         const regex = new RegExp(autocomplete.query, 'i');
         const restaurantDocuments = await RestaurantModel.find({
             $or: [
@@ -20,7 +24,7 @@ export class RestaurantMongoDBDataSource {
             .populate({ path: 'subscription', model: SubscriptionModel })
             .limit(10);
 
-        return this.documentsToRestaurant(restaurantDocuments)
+        return this.documentsToRestaurant(restaurantDocuments);
     }
 
     getTypes = async (): Promise<string[]> => {
