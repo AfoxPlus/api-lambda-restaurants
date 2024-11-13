@@ -4,9 +4,15 @@ import { RestaurantMongoDBDataSource } from "@core/data/sources/database/Restaur
 import { GooglePlaceDataSource } from "../sources/remote/GooglePlaceDataSource";
 import { Content, SectionBDUI } from "@core/domain/entities/SectionBDUI";
 import { RestaurantFilter } from "@core/domain/models/RestaurantFilter";
+import { Autocomplete } from "@core/domain/models/Autocomplete";
 
 export class RestaurantDataRepository implements RestaurantRepository {
     constructor(private dataSource: RestaurantMongoDBDataSource, private remoteDataSource: GooglePlaceDataSource) { }
+
+    autocomplete = async (autocomplete: Autocomplete): Promise<Restaurant[]> => {
+        return await this.dataSource.autocomplete(autocomplete)
+    }
+
     generateUniqueKey = async (): Promise<string> => {
         return await this.dataSource.generateUniqueKey()
     }

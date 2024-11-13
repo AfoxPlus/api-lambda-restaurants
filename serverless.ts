@@ -9,6 +9,7 @@ import homeBDUI from '@functions/home/v1';
 import partner from '@functions/partner';
 import types from '@functions/types';
 import filter from '@functions/filter';
+import autocomplete from '@functions/autocomplete';
 
 const serverlessConfiguration: AWS = {
   service: 'api-lambda-restaurants',
@@ -35,7 +36,7 @@ const serverlessConfiguration: AWS = {
     lambdaHashingVersion: '20201221',
   },
 
-  functions: { home, find, add, auth, geo, homeBDUI, partner, types, filter },
+  functions: { home, find, add, auth, geo, homeBDUI, partner, types, filter, autocomplete },
   package: { individually: true },
   custom: {
     stage: '${opt:stage}',

@@ -3,8 +3,25 @@ import { RestaurantDocument, RestaurantModel } from "@core/data/sources/database
 import { RegistrationStateModel, SubscriptionModel } from "@core/data/sources/database/models/registration.state.model";
 import { RestaurantFilter } from "@core/domain/models/RestaurantFilter";
 import crypto from 'crypto';
+import { Autocomplete } from "@core/domain/models/Autocomplete";
 
 export class RestaurantMongoDBDataSource {
+
+    autocomplete = async (autocomplete: Autocomplete): Promise<Restaurant[]> => {
+        const regex = new RegExp(autocomplete.query, 'i');
+        const restaurantDocuments = await RestaurantModel.find({
+            $or: [
+                { name: { $regex: regex } },
+                { 'types.name': { $regex: regex } },
+            ],
+            showInApp: true
+        })
+            .populate({ path: 'registrationState', model: RegistrationStateModel })
+            .populate({ path: 'subscription', model: SubscriptionModel })
+            .limit(10);
+
+        return this.documentsToRestaurant(restaurantDocuments)
+    }
 
     getTypes = async (): Promise<string[]> => {
         try {

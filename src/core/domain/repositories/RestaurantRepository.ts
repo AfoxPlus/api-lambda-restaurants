@@ -1,6 +1,7 @@
 import { Restaurant } from "@core/domain/entities/Restaurant"
 import { SectionBDUI } from "@core/domain/entities/SectionBDUI"
 import { RestaurantFilter } from "@core/domain/models/RestaurantFilter"
+import { Autocomplete } from "../models/Autocomplete"
 
 export interface RestaurantRepository {
     fetchHome(): Promise<Restaurant[]>
@@ -12,4 +13,5 @@ export interface RestaurantRepository {
     getTypes(): Promise<string[]>
     filterRestaurants(filter: RestaurantFilter): Promise<Restaurant[]>
     generateUniqueKey(): Promise<string>
+    autocomplete(autocomplete: Autocomplete): Promise<Restaurant[]>
 }
