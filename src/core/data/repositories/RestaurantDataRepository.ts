@@ -9,6 +9,10 @@ import { Autocomplete } from "@core/domain/models/Autocomplete";
 export class RestaurantDataRepository implements RestaurantRepository {
     constructor(private dataSource: RestaurantMongoDBDataSource, private remoteDataSource: GooglePlaceDataSource) { }
 
+    addAll = async (restaurants: Restaurant[]): Promise<Restaurant[]> => {
+        return await this.dataSource.addAll(restaurants)
+    }
+
     autocomplete = async (autocomplete: Autocomplete): Promise<Restaurant[]> => {
         return await this.dataSource.autocomplete(autocomplete)
     }

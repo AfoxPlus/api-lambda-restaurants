@@ -8,7 +8,8 @@ const addRestaurants: ValidatedEventAPIGatewayProxyEvent<LocationRequest> = asyn
   const restaurantRepository = RestaurantDI.restaurantRepository
   const locationRequest = context.body as LocationRequest
 
-  const result = await restaurantRepository.fetchByGooglePlaces(locationRequest.latitude, locationRequest.longitude, locationRequest.radius)
+  const places = await restaurantRepository.fetchByGooglePlaces(locationRequest.latitude, locationRequest.longitude, locationRequest.radius)
+  const result = await restaurantRepository.addAll(places)
 
   return formatJSONSuccessResponse({
     success: true,

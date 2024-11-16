@@ -35,7 +35,7 @@ export interface Restaurant {
 }
 export interface PaymentMethod {
     paymentMethod: string,
-    isDefaultSelected: boolean
+    isDefaultSelected?: boolean
 }
 export interface Location {
     latitude: number

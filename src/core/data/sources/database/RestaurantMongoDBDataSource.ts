@@ -7,6 +7,14 @@ import { Autocomplete } from "@core/domain/models/Autocomplete";
 
 export class RestaurantMongoDBDataSource {
 
+    addAll = async (restaurants: Restaurant[]): Promise<Restaurant[]> => {
+
+        const documents = restaurants.map(restaurant => this.restaurantToDocument(restaurant))
+
+        const result: RestaurantDocument[] = await RestaurantModel.create(documents)
+        return this.documentsToRestaurant(result);
+    }
+
     autocomplete = async (autocomplete: Autocomplete): Promise<Restaurant[]> => {
         if (!autocomplete.query) {
             return [];
@@ -187,8 +195,8 @@ export class RestaurantMongoDBDataSource {
             areaLevel1: document.areaLevel1,
             country: document.country,
             location: {
-                longitude: document.location.coordinates[0],
-                latitude: document.location.coordinates[1]
+                latitude: document.location.coordinates[0],
+                longitude: document.location.coordinates[1]
             },
             types: document.types?.map((item) => ({ name: item.name })),
             paymentMethods: this.documentToPaymentMethods(document.paymentMethods),
@@ -248,8 +256,8 @@ export class RestaurantMongoDBDataSource {
             location: {
                 type: 'Point',
                 coordinates: [
-                    restaurant.location ? restaurant.location.longitude : 0.0,
-                    restaurant.location ? restaurant.location.latitude : 0.0
+                    restaurant.location ? restaurant.location.latitude : 0.0,
+                    restaurant.location ? restaurant.location.longitude : 0.0
                 ]
             },
             types: restaurant.types.map(type => ({ name: type.name })),
