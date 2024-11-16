@@ -268,7 +268,7 @@ export class RestaurantMongoDBDataSource {
             regularOpeningHours: restaurant.regularOpeningHours?.map(hour => ({
                 weekdayDescription: hour.weekdayDescription
             })) || [],
-            photos: restaurant.photos.map(photo => ({
+            photos: restaurant.photos?.map(photo => ({
                 name: photo.name,
                 widthPx: photo.widthPx,
                 heightPx: photo.heightPx
